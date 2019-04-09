@@ -3,12 +3,12 @@ const path = require("path");
 const morgan = require("morgan");
 const express = require("express");
 const app = express();
-module.exports = app;
+const {db} = require("./db")
+
+app.use(morgan("dev"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.use(morgan("dev"));
 
 app.use(express.static(path.join(__dirname, "..", "public")));
 
@@ -24,7 +24,12 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).send(err.message || "Internal server error.");
 });
 
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}
-  http://localhost:${PORT}/`);
-});
+// db.sync().then(() => {
+//   app.listen(PORT, () => {
+//     console.log(`Listening on port ${PORT}
+//   http://localhost:${PORT}/`);
+//   });
+// });
+
+module.exports = app;
+
