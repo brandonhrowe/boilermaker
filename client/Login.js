@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {login} from './reducer'
 
-const Login = (props) => {
+const AuthForm = (props) => {
   const {handleSubmit} = props
 
   return (
@@ -28,18 +28,48 @@ const Login = (props) => {
     </div>
   )
 }
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  const history = ownProps.history
-
+const mapLogin = state => {
   return {
-    handleSubmit (event) {
-      event.preventDefault()
-      const email = event.target.email.value;
-      const password = event.target.password.value;
-      dispatch(login({email, password})).then(() => history.push("/home"))
+    name: 'login',
+    displayName: 'Login',
+    error: state.user.error
+  }
+}
+
+const mapSignup = state => {
+  return {
+    name: 'signup',
+    displayName: 'Sign Up',
+    error: state.user.error
+  }
+}
+
+const mapDispatch = dispatch => {
+  return {
+    handleSubmit(evt) {
+      evt.preventDefault()
+      const formName = evt.target.name
+      const email = evt.target.email.value
+      const password = evt.target.password.value
+      dispatch(auth(email, password, formName))
     }
   }
 }
 
-export default connect(null, mapDispatchToProps)(Login)
+export const Login = connect(mapLogin, mapDispatch)(AuthForm)
+export const Signup = connect(mapSignup, mapDispatch)(AuthForm)
+
+// const mapDispatchToProps = (dispatch, ownProps) => {
+//   const history = ownProps.history
+
+//   return {
+//     handleSubmit (event) {
+//       event.preventDefault()
+//       const email = event.target.email.value;
+//       const password = event.target.password.value;
+//       dispatch(login({email, password})).then(() => history.push("/home"))
+//     }
+//   }
+// }
+
+// export default connect(null, mapDispatchToProps)(Login)
