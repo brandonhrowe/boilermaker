@@ -1,9 +1,6 @@
-"use strict";
-
 const db = require("./db");
 const Sequelize = require("sequelize");
-
-const User = require("./user");
+const User = require("./user")
 
 //define relationships between models
 
